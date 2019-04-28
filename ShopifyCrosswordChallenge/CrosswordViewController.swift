@@ -66,14 +66,21 @@ class CrosswordViewController: UIViewController {
   
   var wordsFound = [String]()
   
-  var width: CGFloat!
-  var cellWidth: CGFloat!
+  var width: CGFloat {
+    get {
+      return view.frame.width
+    }
+  }
+  
+  var cellWidth: CGFloat {
+    get {
+      return (width - 16) / 10
+    }
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    width = view.frame.width
-    cellWidth = (width - 16) / 10
     setupView()
     populateCrossword()
   }
@@ -107,6 +114,7 @@ class CrosswordViewController: UIViewController {
   }
   
   var wordGenerated = ""
+  var keysUsed = [String]()
   
   var currentValues: [String]! {
     didSet {
@@ -143,6 +151,8 @@ class CrosswordViewController: UIViewController {
         currentValues.removeLast()
         
         guard let cell = cells[key] as? CrosswordCell else { return }
+        
+        if keysUsed.contains(key) { return }
 
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
           cell.layer.transform = CATransform3DIdentity
@@ -153,7 +163,6 @@ class CrosswordViewController: UIViewController {
       break
     case .ended:
       // print("ended")
-      print(currentValues)
       
       if wordsFound.contains(wordGenerated) { return }
       
@@ -161,12 +170,18 @@ class CrosswordViewController: UIViewController {
         for value in currentValues {
           guard let someCell = cells[value] else { continue }
           
+          if keysUsed.contains(value) { continue }
+          
           UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             someCell.layer.transform = CATransform3DIdentity
             someCell.layer.cornerRadius = 0
           }, completion: nil)
         }
         return
+      } else {
+        for value in currentValues {
+          keysUsed.append(value)
+        }
       }
       
       wordsFound.append(wordGenerated)
@@ -180,7 +195,7 @@ class CrosswordViewController: UIViewController {
         
         let strokeView = UIView()
         
-        shapeLayer.strokeColor = UIColor(red: 187/255, green: 153/255, blue: 0/255, alpha: 1).cgColor
+        shapeLayer.strokeColor = UIColor(red:0.96, green:0.00, blue:0.34, alpha:1.0).cgColor
         shapeLayer.fillColor = UIColor(red: 26/255, green: 72/255, blue: 149/255, alpha: 1).cgColor
         shapeLayer.lineWidth = (cellWidth * 0.8)
         strokeView.layer.addSublayer(shapeLayer)
