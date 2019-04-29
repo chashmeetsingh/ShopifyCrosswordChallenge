@@ -1,23 +1,12 @@
 //
-//  Extensions.swift
+//  AutolayoutHelper.swift
 //  ShopifyCrosswordChallenge
 //
-//  Created by Chashmeet on 25/04/19.
+//  Created by Chashmeet on 29/04/19.
 //  Copyright © 2019 Chashmeet Singh. All rights reserved.
 //
 
 import UIKit
-
-extension UIColor {
-  
-  static func getRandomColor() -> UIColor {
-    let red = CGFloat(drand48())
-    let green = CGFloat(drand48())
-    let blue = CGFloat(drand48())
-    return UIColor(red: red, green: green, blue: blue, alpha: 1)
-  }
-  
-}
 
 struct AnchoredConstraints {
   var top, leading, bottom, trailing, width, height: NSLayoutConstraint?

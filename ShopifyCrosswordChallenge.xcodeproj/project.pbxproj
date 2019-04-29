@@ -8,17 +8,32 @@
 
 /* Begin PBXBuildFile section */
 		B11D00E12275949300BD55CD /* CurrentWordLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D00E02275949300BD55CD /* CurrentWordLabel.swift */; };
+		B11D00E3227603E400BD55CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B11D00E2227603E400BD55CD /* Main.storyboard */; };
+		B11D00E5227655E300BD55CD /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D00E4227655E300BD55CD /* Direction.swift */; };
+		B11D00E7227655FC00BD55CD /* Difficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D00E6227655FC00BD55CD /* Difficulty.swift */; };
+		B11D00EB2276570200BD55CD /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D00EA2276570200BD55CD /* Images.swift */; };
+		B1524E442277371900AF7642 /* AutolayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1524E432277371900AF7642 /* AutolayoutHelper.swift */; };
+		B195F250227726CF00E966DB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B195F24F227726CF00E966DB /* Color.swift */; };
+		B195F2522277299900E966DB /* ReconfigureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B195F2512277299900E966DB /* ReconfigureView.swift */; };
+		B195F254227729FC00E966DB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B195F253227729FC00E966DB /* Modal.swift */; };
 		B199765A227252C100718962 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1997659227252C100718962 /* AppDelegate.swift */; };
 		B199765C227252C100718962 /* CrosswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B199765B227252C100718962 /* CrosswordViewController.swift */; };
 		B1997661227252C200718962 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B1997660227252C200718962 /* Assets.xcassets */; };
 		B1997664227252C200718962 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B1997662227252C200718962 /* LaunchScreen.storyboard */; };
 		B199766C22725EEC00718962 /* CrosswordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B199766B22725EEC00718962 /* CrosswordCell.swift */; };
-		B199766E22725F2F00718962 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B199766D22725F2F00718962 /* Extensions.swift */; };
-		B19976702272671700718962 /* CrosswordGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B199766F2272671700718962 /* CrosswordGenerator.swift */; };
+		B19976702272671700718962 /* WordSearchGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B199766F2272671700718962 /* WordSearchGenerator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		B11D00E02275949300BD55CD /* CurrentWordLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWordLabel.swift; sourceTree = "<group>"; };
+		B11D00E2227603E400BD55CD /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		B11D00E4227655E300BD55CD /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		B11D00E6227655FC00BD55CD /* Difficulty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Difficulty.swift; sourceTree = "<group>"; };
+		B11D00EA2276570200BD55CD /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
+		B1524E432277371900AF7642 /* AutolayoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutolayoutHelper.swift; sourceTree = "<group>"; };
+		B195F24F227726CF00E966DB /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		B195F2512277299900E966DB /* ReconfigureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReconfigureView.swift; sourceTree = "<group>"; };
+		B195F253227729FC00E966DB /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		B1997656227252C100718962 /* ShopifyCrosswordChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShopifyCrosswordChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B1997659227252C100718962 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B199765B227252C100718962 /* CrosswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordViewController.swift; sourceTree = "<group>"; };
@@ -26,8 +41,7 @@
 		B1997663227252C200718962 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B1997665227252C200718962 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B199766B22725EEC00718962 /* CrosswordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordCell.swift; sourceTree = "<group>"; };
-		B199766D22725F2F00718962 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		B199766F2272671700718962 /* CrosswordGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrosswordGenerator.swift; sourceTree = "<group>"; };
+		B199766F2272671700718962 /* WordSearchGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordSearchGenerator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,9 +80,16 @@
 				B1997662227252C200718962 /* LaunchScreen.storyboard */,
 				B1997665227252C200718962 /* Info.plist */,
 				B199766B22725EEC00718962 /* CrosswordCell.swift */,
-				B199766D22725F2F00718962 /* Extensions.swift */,
-				B199766F2272671700718962 /* CrosswordGenerator.swift */,
+				B199766F2272671700718962 /* WordSearchGenerator.swift */,
 				B11D00E02275949300BD55CD /* CurrentWordLabel.swift */,
+				B11D00E2227603E400BD55CD /* Main.storyboard */,
+				B11D00E4227655E300BD55CD /* Direction.swift */,
+				B11D00E6227655FC00BD55CD /* Difficulty.swift */,
+				B11D00EA2276570200BD55CD /* Images.swift */,
+				B195F24F227726CF00E966DB /* Color.swift */,
+				B195F2512277299900E966DB /* ReconfigureView.swift */,
+				B195F253227729FC00E966DB /* Modal.swift */,
+				B1524E432277371900AF7642 /* AutolayoutHelper.swift */,
 			);
 			path = ShopifyCrosswordChallenge;
 			sourceTree = "<group>";
@@ -131,6 +152,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B11D00E3227603E400BD55CD /* Main.storyboard in Resources */,
 				B1997664227252C200718962 /* LaunchScreen.storyboard in Resources */,
 				B1997661227252C200718962 /* Assets.xcassets in Resources */,
 			);
@@ -143,12 +165,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B195F254227729FC00E966DB /* Modal.swift in Sources */,
+				B11D00E5227655E300BD55CD /* Direction.swift in Sources */,
+				B195F250227726CF00E966DB /* Color.swift in Sources */,
 				B199765C227252C100718962 /* CrosswordViewController.swift in Sources */,
+				B1524E442277371900AF7642 /* AutolayoutHelper.swift in Sources */,
 				B199766C22725EEC00718962 /* CrosswordCell.swift in Sources */,
 				B11D00E12275949300BD55CD /* CurrentWordLabel.swift in Sources */,
 				B199765A227252C100718962 /* AppDelegate.swift in Sources */,
-				B199766E22725F2F00718962 /* Extensions.swift in Sources */,
-				B19976702272671700718962 /* CrosswordGenerator.swift in Sources */,
+				B11D00EB2276570200BD55CD /* Images.swift in Sources */,
+				B11D00E7227655FC00BD55CD /* Difficulty.swift in Sources */,
+				B195F2522277299900E966DB /* ReconfigureView.swift in Sources */,
+				B19976702272671700718962 /* WordSearchGenerator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

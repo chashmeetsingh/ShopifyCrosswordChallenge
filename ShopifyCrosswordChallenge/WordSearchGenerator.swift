@@ -8,46 +8,6 @@
 
 import Foundation
 
-enum Direction: CaseIterable {
-  
-  // Supported word orientations
-  case leftToRight
-  case topToBottom
-  case rightToLeft
-  case bottomToTop
-  
-  var movement: (x: Int, y: Int) {
-    switch self {
-    case .leftToRight:
-      return (1, 0)
-    case .topToBottom:
-      return (0, 1)
-    case .rightToLeft:
-      return (-1, 0)
-    case .bottomToTop:
-      return (0, -1)
-    }
-  }
-  
-}
-
-enum Difficulty {
-  case easy
-  case medium
-  case hard
-  
-  var directions: [Direction] {
-    switch self {
-    case .easy:
-      return [.leftToRight, .topToBottom].shuffled()
-    case .medium:
-      return [.leftToRight, .topToBottom, .rightToLeft, .bottomToTop].shuffled()
-    case .hard:
-      return Direction.allCases.shuffled()
-    }
-  }
-}
-
 struct Word {
   var text: String
 }
@@ -56,7 +16,7 @@ class Label {
   var letter: Character = "-"
 }
 
-class WordSearch {
+class WordSearchGenerator {
   var words = [Word]()
   
   var numberOfRows = 10
@@ -67,13 +27,16 @@ class WordSearch {
   
   let allLetters = (65...90).map { Character(Unicode.Scalar($0)) }
   
-  init(_ rows: Int, _ columns: Int, _ words: [String]) {
+  init(_ rows: Int, _ columns: Int, _ wordList: [String]) {
     self.numberOfRows = rows
     self.numberOfColumns = columns
     
     self.words = []
-    for word in words {
+    for word in wordList {
       self.words.append(Word(text: word))
+    }
+    self.words.sort { (w1, w2) -> Bool in
+      w1.text.count > w2.text.count
     }
     
   }
@@ -128,7 +91,7 @@ class WordSearch {
     return returnValue
   }
   
-  func tryPlace(_ word: String, direction: (x: Int, y: Int)) -> Bool {
+  func tryPlacing(_ word: String, direction: (x: Int, y: Int)) -> Bool {
     let xLength = direction.x * (word.count - 1)
     let yLength = direction.y * (word.count - 1)
     
@@ -153,16 +116,16 @@ class WordSearch {
     return false
   }
   
-  func placeWord(_ word: Word) -> Bool {
+  func place(_ word: Word) -> Bool {
     let formatterWord = word.text.replacingOccurrences(of: " ", with: "").uppercased()
     
     return difficulty.directions.contains {
-      tryPlace(formatterWord, direction: $0.movement)
+      tryPlacing(formatterWord, direction: $0.movement)
     }
   }
   
   func placeWords() -> [Word] {
-    return words.shuffled().filter(placeWord)
+    return words.shuffled().filter(place)
   }
   
 }
