@@ -147,7 +147,7 @@ class CrosswordViewController: UIViewController {
     if UIDevice.current.orientation.isPortrait {
       width = containerView.frame.width - 32
     } else if UIDevice.current.orientation.isLandscape {
-      let del = currentWordLabel.frame.height + 40
+      let del: CGFloat = currentWordLabel.frame.height + 16 + 8
       width = containerView.frame.height - del
     }
   }
@@ -162,11 +162,11 @@ class CrosswordViewController: UIViewController {
   // Update constraints when orientation is changed
   func updateConstraints() {
     crosswordCollectionView.constraints.forEach { (constraint) in
-      if constraint.firstAttribute == .height || constraint.firstAttribute == .width {
+      if constraint.firstAttribute == .width || constraint.firstAttribute == .height {
         constraint.constant = width
       }
     }
-    crosswordCollectionView.setNeedsUpdateConstraints()
+    crosswordCollectionView.setNeedsLayout()
     
     currentWordLabel.constraints.forEach { (constraint) in
       if constraint.firstAttribute == .width {
@@ -209,8 +209,8 @@ class CrosswordViewController: UIViewController {
     guard let cell = cells[key] as? CrosswordCell else { return }
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
       if !defaultState {
-        cell.layer.cornerRadius = self.cellWidth / 2
         cell.layer.transform = CATransform3DMakeScale(0.8, 0.8, 0.8)
+        cell.layer.cornerRadius = self.cellWidth / 2
       } else {
         cell.layer.transform = CATransform3DIdentity
         cell.layer.cornerRadius = 0
@@ -260,12 +260,10 @@ class CrosswordViewController: UIViewController {
   
   func regenerateStrokeViews() {
     for (_, values) in keysForWordsFound {
-      
-      drawCurves(values[0], values[values.count - 1])
-      
       for value in values {
         setCellState(key: value)
       }
+      drawCurves(values[0], values[values.count - 1])
     }
   }
   

@@ -12,7 +12,7 @@ fileprivate let cellIdentifier = "cellId"
 
 class WordsCollectionView: UICollectionView {
   
-  var words: [Word]!
+  var words: [Word] = []
   var wordsFound: [String] = [] {
     didSet {
       reloadData()
@@ -57,16 +57,16 @@ extension WordsCollectionView: UICollectionViewDelegateFlowLayout, UICollectionV
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
     let word = words[indexPath.item]
-    let estimatedWidth = word.text.width(withConstrainedHeight: 20, font: .systemFont(ofSize: 17))
-    return CGSize(width: estimatedWidth + 16, height: 28)
+    let estimatedWidth = word.text.width(withConstrainedHeight: 17, font: .systemFont(ofSize: 12))
+    return CGSize(width: estimatedWidth + 8, height: 20)
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    return 8
+    return 4
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    return 8
+    return 4
   }
   
 }

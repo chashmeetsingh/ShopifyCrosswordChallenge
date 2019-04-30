@@ -19,6 +19,7 @@ class WordCell: UICollectionViewCell {
   let wordLabel: UILabel = {
     let label = UILabel()
     label.textColor = .white
+    label.font = UIFont.systemFont(ofSize: 12)
     label.translatesAutoresizingMaskIntoConstraints = false
     label.text = "Something"
     label.textAlignment = .center
