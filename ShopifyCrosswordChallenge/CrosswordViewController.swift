@@ -12,80 +12,67 @@ fileprivate let cellIdentifier = "cellId"
 
 class CrosswordViewController: UIViewController {
   
-  var cells = [String: UIView]()
-
-  var words: [String] = ["SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "ANDROID", "IOS"]
-
-  var wordSearch: WordSearchGenerator!
-  
-  var emitter = CAEmitterLayer()
-  var animating = false
-  
-  var gameCompletionView: ReconfigureView!
-  
-  var colors: [UIColor] = [
-    UIColor.customRed,
-    UIColor.customBlue,
-    UIColor.customGreen,
-    UIColor.customYellow
-  ]
-  
-  var images: [UIImage] = [
-    UIImage.box,
-    UIImage.triangle,
-    UIImage.circle,
-    UIImage.swirl
-  ]
-  
-  var velocities: [Int] = [
-    100,
-    90,
-    150,
-    200
-  ]
-  
+  // MARK:- Declarations
   @IBOutlet weak var currentWordLabel: CurrentWordLabel!
   @IBOutlet weak var crosswordCollectionView: UICollectionView!
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var scoreLabel: UILabel!
   @IBOutlet weak var wordsCollectionView: WordsCollectionView!
   
+  // Crossword generator
+  var wordSearch: WordSearchGenerator!
+  
+  // Width calculated dynamically based on orientation
+  var dynamicWidth: CGFloat = 0
+  
+  // Save words already found
   var wordsFound = [String]() {
     didSet {
+      // Update score label when a new word is found
       scoreLabel.text = "Score: \(wordsFound.count)/\(wordSearch.words.count)"
+      
       wordsCollectionView.wordsFound = wordsFound
       
-      if wordsFound.count == wordSearch.words.count {
-        gameComplete()
+      if wordsFound.count == Constants.words.count {
+        completeGame()
       }
     }
   }
   
-  var width: CGFloat = 0
+  // Store key to cell dictionary
+  var cellFromKey = [String: UIView]()
+
+  // Store keys of cells of words already found
+  var keysFound = [String]()
   
-  var cellWidth: CGFloat {
-    get {
-      return width / 10
+  // Current keys for gesture
+  var currentKeysForGestureState = [String]() {
+    didSet {
+      currentWordLabel.text = getWordGenerated()
     }
   }
+  
+  var wordToListOfKeys = [String : [String]]()
+  
+  var strokeViews = [UIView]()
+  
+  var gameCompletionUI: GameCompletionView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    setupCollectionView()
+    setupCrosswordCollectionView()
     populateCrossword()
     setupWordLabel()
     setupScoreLabel()
-    setupGameCompletionView()
     setupWordsCollectionView()
+    setupGameCompletionUI()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
-    setCrosswordViewWidth()
-    updateConstraints()
-    crosswordCollectionView.reloadData()
+    calculateWidthAndUpdateConstraints()
   }
   
   // Light status bar
@@ -99,81 +86,18 @@ class CrosswordViewController: UIViewController {
     
     // Perform the following only after completion of the orientation
     coordinator.animate(alongsideTransition: nil) { _ in
-      self.setCrosswordViewWidth()
-      self.updateConstraints()
-      self.crosswordCollectionView.collectionViewLayout.invalidateLayout()
-      
-      self.removeStrokeViews()
-      self.regenerateStrokeViews()
-      self.wordsCollectionView.reloadData()
+      self.calculateWidthAndUpdateConstraints()
+      self.animateCellsForWordsFound()
     }
   }
   
-  func setupWordsCollectionView() {
-    wordsCollectionView.words = wordSearch.words.reversed()
-  }
+  // MARK:- Setup UI
   
-  func setupGameCompletionView() {
-    gameCompletionView = ReconfigureView(frame: view.bounds)
-    gameCompletionView.delegate = self
-  }
-  
-  func resetState() {
-    populateCrossword()
-    wordsFound = []
-    
-    for key in keysUsed {
-      setCellState(key: key, defaultState: true)
-    }
-    
-    keysUsed = []
-    keysForWordsFound = [:]
-    removeStrokeViews()
-    stopConfettiAnimation(clear: true)
-    currentWordLabel.text = " "
-    crosswordCollectionView.isUserInteractionEnabled = !crosswordCollectionView.isUserInteractionEnabled
-    
-    crosswordCollectionView.reloadData()
-  }
-  
-  func gameComplete() {
-    crosswordCollectionView.isUserInteractionEnabled = !crosswordCollectionView.isUserInteractionEnabled
-    startConfettiAnimation()
-    gameCompletionView.show(animated: true)
-  }
-  
-  // Dynamically calculate width of collection view based on orientation
-  fileprivate func setCrosswordViewWidth() {
-    if UIDevice.current.orientation.isPortrait {
-      width = containerView.frame.width - 32
-    } else if UIDevice.current.orientation.isLandscape {
-      let del: CGFloat = currentWordLabel.frame.height + 16 + 8
-      width = containerView.frame.height - del
-    }
-  }
-  
-  func setupCollectionView() {
+  func setupCrosswordCollectionView() {
     crosswordCollectionView.register(CrosswordCell.self, forCellWithReuseIdentifier: cellIdentifier)
-    crosswordCollectionView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture)))
+    crosswordCollectionView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handleCrosswordSwipeGesture(gesture:))))
     crosswordCollectionView.backgroundColor = .clear
     crosswordCollectionView.translatesAutoresizingMaskIntoConstraints = false
-  }
-  
-  // Update constraints when orientation is changed
-  func updateConstraints() {
-    crosswordCollectionView.constraints.forEach { (constraint) in
-      if constraint.firstAttribute == .width || constraint.firstAttribute == .height {
-        constraint.constant = width
-      }
-    }
-    crosswordCollectionView.setNeedsLayout()
-    
-    currentWordLabel.constraints.forEach { (constraint) in
-      if constraint.firstAttribute == .width {
-        constraint.constant = width
-      }
-    }
-    currentWordLabel.setNeedsUpdateConstraints()
   }
   
   func setupWordLabel() {
@@ -186,43 +110,147 @@ class CrosswordViewController: UIViewController {
     scoreLabel.text = "Score: \(wordsFound.count)/\(wordSearch.words.count)"
   }
   
+  func setupWordsCollectionView() {
+    wordsCollectionView.words = wordSearch.words.reversed()
+  }
+  
+  func setupGameCompletionUI() {
+    gameCompletionUI = GameCompletionView(frame: view.bounds)
+    view.addSubview(gameCompletionUI)
+    gameCompletionUI.delegate = self
+  }
+  
+  // MARK:- Methods
+  
+  // Dynamically calculate width of collection view based on orientation
+  fileprivate func calculateWidthAndUpdateConstraints() {
+    if UIDevice.current.orientation.isPortrait {
+      dynamicWidth = containerView.frame.width - 32
+    } else if UIDevice.current.orientation.isLandscape {
+      let del: CGFloat = currentWordLabel.frame.height + 16 + 8
+      dynamicWidth = containerView.frame.height - del
+    }
+    
+    crosswordCollectionView.constraints.forEach { (constraint) in
+      if constraint.firstAttribute == .width || constraint.firstAttribute == .height {
+        constraint.constant = dynamicWidth
+      }
+    }
+    crosswordCollectionView.reloadData()
+    
+    currentWordLabel.constraints.forEach { (constraint) in
+      if constraint.firstAttribute == .width {
+        constraint.constant = dynamicWidth
+      }
+    }
+  }
+
   // Initialize grid with a set of words
   func populateCrossword() {
-    wordSearch = WordSearchGenerator(10, 10, words)
+    wordSearch = WordSearchGenerator(10, 10, Constants.words)
     wordSearch.generateGrid()
   }
   
-  var wordGenerated = ""
-  var keysUsed = [String]()
-  
-  var currentValues: [String]! {
-    didSet {
-      wordGenerated = getCurrentWord()
-      currentWordLabel.text = wordGenerated
+  func storeKeyForCurrentGestureAndAnimateCell(_ key: String) {
+    if !currentKeysForGestureState.contains(key) {
+      currentKeysForGestureState.append(key)
     }
+    updateCellState(key)
   }
   
-  var strokeViews = [UIView]()
-  var keysForWordsFound = [String : [String]]()
-  
-  fileprivate func setCellState(key: String, defaultState: Bool = false) {
-    guard let cell = cells[key] as? CrosswordCell else { return }
+  func updateCellState(_ key: String, identity: Bool = false) {
+    guard let cell = cellFromKey[key] as? CrosswordCell else { return }
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-      if !defaultState {
+      cell.layer.transform = CATransform3DIdentity
+      cell.layer.cornerRadius = 0
+      if !identity {
+        cell.layer.cornerRadius = (self.dynamicWidth / 10) / 2
         cell.layer.transform = CATransform3DMakeScale(0.8, 0.8, 0.8)
-        cell.layer.cornerRadius = self.cellWidth / 2
-      } else {
-        cell.layer.transform = CATransform3DIdentity
-        cell.layer.cornerRadius = 0
       }
     }, completion: nil)
   }
   
-  // Generate stroke after word is successfully found
-  fileprivate func drawCurves(_ startKey: String, _ endKey: String) {
-    if let initialView = cells[startKey], let destinationView = cells[endKey] {
-      var startPoint = CGPoint(x: initialView.center.x, y: initialView.center.y)
-      var endPoint = CGPoint(x: destinationView.center.x, y: destinationView.center.y)
+  @objc func handleCrosswordSwipeGesture(gesture: UIPanGestureRecognizer) {
+    let location = gesture.location(in: crosswordCollectionView)
+    
+    // Get the row and column index
+    let column = Int(location.x / (dynamicWidth / 10))
+    let row = Int(location.y / (dynamicWidth / 10))
+    
+    let key = "\(row)|\(column)"
+    
+    if (column < 0 || column > 9 || row < 0 || row > 9) {
+      gesture.state = .ended
+    }
+    
+    switch gesture.state {
+    case .began:
+      currentKeysForGestureState = []
+      storeKeyForCurrentGestureAndAnimateCell(key)
+      break
+    case .changed:
+      storeKeyForCurrentGestureAndAnimateCell(key)
+      break
+    case .ended:
+      if wordsFound.contains(getWordGenerated()) {
+        return
+      }
+      
+      if !Constants.words.contains(getWordGenerated()) {
+        for key in currentKeysForGestureState {
+          updateCellState(key, identity: true)
+        }
+      } else {
+        for key in currentKeysForGestureState {
+          keysFound.append(key)
+        }
+        wordsFound.append(getWordGenerated())
+        wordToListOfKeys[getWordGenerated()] = currentKeysForGestureState
+        drawCurve(startKey: currentKeysForGestureState[0], endKey: currentKeysForGestureState[currentKeysForGestureState.count - 1])
+      }
+      break
+    default:
+      break
+    }
+    
+  }
+  
+  func getWordGenerated() -> String {
+    var word = ""
+    for key in currentKeysForGestureState {
+      guard let cell = cellFromKey[key] as? CrosswordCell else { return "" }
+      word += cell.charLabel.text!
+    }
+    return word
+  }
+  
+  func animateCellsForWordsFound() {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+      for key in self.keysFound {
+        self.updateCellState(key)
+      }
+      self.removeStrokeView()
+      self.regenerateStrokeViews()
+      self.wordsCollectionView.reloadData()
+    })
+  }
+  
+  func removeStrokeView() {
+    for view in strokeViews {
+      view.removeFromSuperview()
+    }
+  }
+  
+  func regenerateStrokeViews() {
+    for (_, value) in wordToListOfKeys {
+      drawCurve(startKey: value[0], endKey: value[value.count - 1])
+    }
+  }
+  
+  func drawCurve(startKey: String, endKey: String) {
+    if let startView = cellFromKey[startKey], let endView = cellFromKey[endKey] {
+      var startPoint = CGPoint(x: startView.center.x, y: startView.center.y)
+      var endPoint = CGPoint(x: endView.center.x, y: endView.center.y)
       
       if UIDevice.current.orientation.isPortrait {
         startPoint.x += view.safeAreaInsets.left
@@ -234,11 +262,10 @@ class CrosswordViewController: UIViewController {
       
       let path = UIBezierPath()
       let shapeLayer = CAShapeLayer()
-      
       let strokeView = UIView()
       
       shapeLayer.strokeColor = UIColor(red: 0.96, green: 0.00, blue: 0.34, alpha: 0.75).cgColor
-      shapeLayer.lineWidth = (cellWidth * 0.8)
+      shapeLayer.lineWidth = ((dynamicWidth / 10) * 0.8)
       strokeView.layer.addSublayer(shapeLayer)
       
       path.move(to: startPoint)
@@ -251,171 +278,26 @@ class CrosswordViewController: UIViewController {
     }
   }
   
-  func removeStrokeViews() {
-    for strokeView in strokeViews {
-      strokeView.removeFromSuperview()
-    }
-    strokeViews = []
+  func completeGame() {
+    gameCompletionUI.startConfettiAnimation()
   }
   
-  func regenerateStrokeViews() {
-    for (_, values) in keysForWordsFound {
-      for value in values {
-        setCellState(key: value)
-      }
-      drawCurves(values[0], values[values.count - 1])
-    }
-  }
-  
-  @objc func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
-    let location = gesture.location(in: crosswordCollectionView)
+  func resetState() {
+    populateCrossword()
+    wordsFound = []
     
-    let column = Int(location.x / cellWidth)
-    let row = Int(location.y / cellWidth)
-    
-    let key = "\(row)|\(column)"
-    
-    switch gesture.state {
-    case .began:
-      // print("began")
-      currentValues = []
-      if !currentValues.contains(key) {
-        currentValues.append(key)
-      }
-      break
-    case .changed:
-      // print("changed")
-      if !currentValues.contains(key) {
-        currentValues.append(key)
-      } else if currentValues.lastIndex(of: key) != currentValues.count - 1 {
-        let key = currentValues[currentValues.count - 1]
-        currentValues.removeLast()
-        
-        
-        
-        if keysUsed.contains(key) { return }
-        
-        setCellState(key: key, defaultState: true)
-        
-      }
-      break
-    case .ended:
-      // print("ended")
-      
-      if wordsFound.contains(wordGenerated) { return }
-      
-      if !words.contains(wordGenerated) {
-        for value in currentValues {
-          
-          if keysUsed.contains(value) { continue }
-          
-          setCellState(key: value, defaultState: true)
-        }
-        return
-      } else {
-        for value in currentValues {
-          keysUsed.append(value)
-        }
-      }
-      
-      keysForWordsFound[wordGenerated] = currentValues
-      
-      wordsFound.append(wordGenerated)
-      
-      drawCurves(currentValues[0], currentValues[currentValues.count - 1])
-      break
-    case .cancelled:
-      print("cancelled")
-      break
-    default:
-      print("unknow gesture state")
-    }
-    setCellState(key: key)
-    
-  }
-  
-  func getCurrentWord() -> String {
-    var word = ""
-    for key in currentValues {
-      guard let cell = cells[key] as? CrosswordCell else { return "" }
-      word += cell.charLabel.text!
-    }
-    return word
-  }
-  
-  func confettiWithColor(color: UIColor) -> CAEmitterCell {
-    let confetti = CAEmitterCell()
-    confetti.scale = 0.1
-    confetti.birthRate = 20.0
-    confetti.lifetime = 15
-    confetti.lifetimeRange = 10
-    confetti.color = color.cgColor
-    confetti.velocity = CGFloat(getRandomVelocity())
-    confetti.velocityRange = 0
-    confetti.emissionLongitude = CGFloat(Double.pi)
-    confetti.emissionRange = CGFloat(Double.pi)
-    confetti.spin = 3.5
-    confetti.spinRange = 0
-    confetti.scaleRange = 0.25
-    confetti.scaleSpeed = CGFloat(-0.1)
-    confetti.contents = getNextImage(i: getRandomNumber())
-    confetti.alphaSpeed = -1.0 / 14.0
-    
-    return confetti
-  }
-  
-  func startConfettiAnimation() {
-    emitter.removeFromSuperlayer()
-    
-    emitter.emitterPosition = CGPoint(x: self.view.frame.size.width / 2, y: -10)
-    emitter.emitterShape = CAEmitterLayerEmitterShape.line
-    emitter.emitterSize = CGSize(width: self.view.frame.size.width, height: 2.0)
-    emitter.renderMode = CAEmitterLayerRenderMode.additive
-    
-    let cells = colors.map({
-      return confettiWithColor(color: $0)
-    })
-    
-    emitter.emitterCells = cells
-    
-    emitter.birthRate = 1.0
-    
-    view.layer.addSublayer(emitter)
-    animating = true
-  }
-  
-  func stopConfettiAnimation(clear: Bool = false) {
-    if clear {
-      emitter.removeFromSuperlayer()
-    } else {
-      emitter.birthRate = 0
+    for key in keysFound {
+      updateCellState(key, identity: true)
     }
     
-    animating = false
-  }
-  
-  private func getRandomVelocity() -> Int {
-    return velocities[getRandomNumber()]
-  }
-  
-  private func getRandomNumber() -> Int {
-    return Int(arc4random_uniform(4))
-  }
-  
-  private func getNextColor(i:Int) -> CGColor {
-    if i <= 4 {
-      return colors[0].cgColor
-    } else if i <= 8 {
-      return colors[1].cgColor
-    } else if i <= 12 {
-      return colors[2].cgColor
-    } else {
-      return colors[3].cgColor
-    }
-  }
-  
-  private func getNextImage(i:Int) -> CGImage {
-    return images[i % 4].cgImage!
+    keysFound = []
+    wordToListOfKeys = [:]
+    removeStrokeView()
+    gameCompletionUI.stopConfettiAnimation()
+    currentWordLabel.text = " "
+    crosswordCollectionView.isUserInteractionEnabled = !crosswordCollectionView.isUserInteractionEnabled
+    
+    crosswordCollectionView.reloadData()
   }
 
 }
@@ -436,12 +318,12 @@ extension CrosswordViewController: UICollectionViewDelegateFlowLayout, UICollect
     let column = indexPath.item
     cell.charLabel.text = "\(wordSearch.crossword[row][column].letter)"
     let key = "\(row)|\(column)"
-    cells[key] = cell
+    cellFromKey[key] = cell
     return cell
   }
   
   func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    return CGSize(width: cellWidth, height: cellWidth)
+    return CGSize(width: dynamicWidth / 10, height: dynamicWidth / 10)
   }
   
 }
