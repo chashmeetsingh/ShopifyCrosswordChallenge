@@ -14,7 +14,7 @@ class CrosswordViewController: UIViewController {
   
   var cells = [String: UIView]()
 
-  var words: [String] = ["SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE"]
+  var words: [String] = ["SWIFT", "KOTLIN", "OBJECTIVEC", "VARIABLE", "JAVA", "MOBILE", "ANDROID", "IOS"]
 
   var wordSearch: WordSearchGenerator!
   
@@ -48,10 +48,12 @@ class CrosswordViewController: UIViewController {
   @IBOutlet weak var crosswordCollectionView: UICollectionView!
   @IBOutlet weak var containerView: UIView!
   @IBOutlet weak var scoreLabel: UILabel!
+  @IBOutlet weak var wordsCollectionView: WordsCollectionView!
   
   var wordsFound = [String]() {
     didSet {
       scoreLabel.text = "Score: \(wordsFound.count)/\(wordSearch.words.count)"
+      wordsCollectionView.wordsFound = wordsFound
       
       if wordsFound.count == wordSearch.words.count {
         gameComplete()
@@ -75,6 +77,7 @@ class CrosswordViewController: UIViewController {
     setupWordLabel()
     setupScoreLabel()
     setupGameCompletionView()
+    setupWordsCollectionView()
   }
   
   override func viewDidAppear(_ animated: Bool) {
@@ -90,9 +93,29 @@ class CrosswordViewController: UIViewController {
     return .lightContent
   }
   
+  // Regenerate bezier curves and invalidate layout on rotation
+  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    super.viewWillTransition(to: size, with: coordinator)
+    
+    // Perform the following only after completion of the orientation
+    coordinator.animate(alongsideTransition: nil) { _ in
+      self.setCrosswordViewWidth()
+      self.updateConstraints()
+      self.crosswordCollectionView.collectionViewLayout.invalidateLayout()
+      
+      self.removeStrokeViews()
+      self.regenerateStrokeViews()
+      self.wordsCollectionView.reloadData()
+    }
+  }
+  
+  func setupWordsCollectionView() {
+    wordsCollectionView.words = wordSearch.words.reversed()
+  }
+  
   func setupGameCompletionView() {
     gameCompletionView = ReconfigureView(frame: view.bounds)
-    gameCompletionView.controller = self
+    gameCompletionView.delegate = self
   }
   
   func resetState() {
@@ -122,31 +145,18 @@ class CrosswordViewController: UIViewController {
   // Dynamically calculate width of collection view based on orientation
   fileprivate func setCrosswordViewWidth() {
     if UIDevice.current.orientation.isPortrait {
-      width = view.frame.width - 32
+      width = containerView.frame.width - 32
     } else if UIDevice.current.orientation.isLandscape {
       let del = currentWordLabel.frame.height + 40
       width = containerView.frame.height - del
     }
   }
   
-  // Regenerate bezier curves and invalidate layout on rotation
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-    super.viewWillTransition(to: size, with: coordinator)
-    
-    // Perform the following only after completion of the orientation
-    coordinator.animate(alongsideTransition: nil) { _ in
-      self.setCrosswordViewWidth()
-      self.crosswordCollectionView.collectionViewLayout.invalidateLayout()
-      self.updateConstraints()
-      
-      self.removeStrokeViews()
-      self.regenerateStrokeViews()
-    }
-  }
-  
   func setupCollectionView() {
     crosswordCollectionView.register(CrosswordCell.self, forCellWithReuseIdentifier: cellIdentifier)
     crosswordCollectionView.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture)))
+    crosswordCollectionView.backgroundColor = .clear
+    crosswordCollectionView.translatesAutoresizingMaskIntoConstraints = false
   }
   
   // Update constraints when orientation is changed
@@ -156,17 +166,20 @@ class CrosswordViewController: UIViewController {
         constraint.constant = width
       }
     }
+    crosswordCollectionView.setNeedsUpdateConstraints()
+    
     currentWordLabel.constraints.forEach { (constraint) in
       if constraint.firstAttribute == .width {
         constraint.constant = width
       }
     }
-    crosswordCollectionView.layoutIfNeeded()
+    currentWordLabel.setNeedsUpdateConstraints()
   }
   
   func setupWordLabel() {
     currentWordLabel.layer.borderColor = UIColor.darkGray.cgColor
     currentWordLabel.layer.borderWidth = 0.8
+    currentWordLabel.translatesAutoresizingMaskIntoConstraints = false
   }
   
   func setupScoreLabel() {
@@ -196,8 +209,8 @@ class CrosswordViewController: UIViewController {
     guard let cell = cells[key] as? CrosswordCell else { return }
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
       if !defaultState {
-        cell.layer.transform = CATransform3DMakeScale(0.8, 0.8, 0.8)
         cell.layer.cornerRadius = self.cellWidth / 2
+        cell.layer.transform = CATransform3DMakeScale(0.8, 0.8, 0.8)
       } else {
         cell.layer.transform = CATransform3DIdentity
         cell.layer.cornerRadius = 0

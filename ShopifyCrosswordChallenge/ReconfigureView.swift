@@ -10,7 +10,7 @@ import UIKit
 
 class ReconfigureView: UIView, Modal {
   
-  var controller: CrosswordViewController!
+  var delegate: CrosswordViewController!
   
   lazy var backgroundView: UIView = {
     let view = UIView()
@@ -53,7 +53,9 @@ class ReconfigureView: UIView, Modal {
   }
   
   required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+    super.init(coder: aDecoder)
+    
+    setupView()
   }
   
   func setupView() {
@@ -83,7 +85,7 @@ class ReconfigureView: UIView, Modal {
   
   @objc func resetButtonTapped() {
     dismiss(animated: true)
-    controller.resetState()
+    delegate.resetState()
   }
   
 }
