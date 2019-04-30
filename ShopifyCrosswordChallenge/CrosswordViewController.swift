@@ -41,7 +41,7 @@ class CrosswordViewController: UIViewController {
   
   // Store key to cell dictionary
   var cellFromKey = [String: UIView]()
-
+  
   // Store keys of cells of words already found
   var keysFound = [String]()
   
@@ -57,7 +57,7 @@ class CrosswordViewController: UIViewController {
   var strokeViews = [UIView]()
   
   var gameCompletionUI: GameCompletionView!
-
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
@@ -144,7 +144,7 @@ class CrosswordViewController: UIViewController {
       }
     }
   }
-
+  
   // Initialize grid with a set of words
   func populateCrossword() {
     wordSearch = WordSearchGenerator(10, 10, Constants.words)
@@ -279,7 +279,7 @@ class CrosswordViewController: UIViewController {
   }
   
   func completeGame() {
-    gameCompletionUI.startConfettiAnimation()
+    gameCompletionUI.showView()
   }
   
   func resetState() {
@@ -293,13 +293,11 @@ class CrosswordViewController: UIViewController {
     keysFound = []
     wordToListOfKeys = [:]
     removeStrokeView()
-    gameCompletionUI.stopConfettiAnimation()
     currentWordLabel.text = " "
-    crosswordCollectionView.isUserInteractionEnabled = !crosswordCollectionView.isUserInteractionEnabled
     
     crosswordCollectionView.reloadData()
   }
-
+  
 }
 
 extension CrosswordViewController: UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {

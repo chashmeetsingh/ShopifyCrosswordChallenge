@@ -16,6 +16,7 @@
 		B1902BA52277A9B900147BF0 /* WordsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1902BA42277A9B900147BF0 /* WordsCollectionView.swift */; };
 		B1902BA72277AB8100147BF0 /* WordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1902BA62277AB8100147BF0 /* WordCell.swift */; };
 		B1902BAB2278A94900147BF0 /* StaticData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1902BAA2278A94900147BF0 /* StaticData.swift */; };
+		B1902BAD2278E97100147BF0 /* ConfettiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1902BAC2278E97100147BF0 /* ConfettiView.swift */; };
 		B195F250227726CF00E966DB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B195F24F227726CF00E966DB /* Color.swift */; };
 		B195F2522277299900E966DB /* GameCompletionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B195F2512277299900E966DB /* GameCompletionView.swift */; };
 		B195F254227729FC00E966DB /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B195F253227729FC00E966DB /* Modal.swift */; };
@@ -37,6 +38,7 @@
 		B1902BA42277A9B900147BF0 /* WordsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsCollectionView.swift; sourceTree = "<group>"; };
 		B1902BA62277AB8100147BF0 /* WordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCell.swift; sourceTree = "<group>"; };
 		B1902BAA2278A94900147BF0 /* StaticData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticData.swift; sourceTree = "<group>"; };
+		B1902BAC2278E97100147BF0 /* ConfettiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfettiView.swift; sourceTree = "<group>"; };
 		B195F24F227726CF00E966DB /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B195F2512277299900E966DB /* GameCompletionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCompletionView.swift; sourceTree = "<group>"; };
 		B195F253227729FC00E966DB /* Modal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
@@ -99,6 +101,7 @@
 				B1902BA42277A9B900147BF0 /* WordsCollectionView.swift */,
 				B1902BA62277AB8100147BF0 /* WordCell.swift */,
 				B1902BAA2278A94900147BF0 /* StaticData.swift */,
+				B1902BAC2278E97100147BF0 /* ConfettiView.swift */,
 			);
 			path = ShopifyCrosswordChallenge;
 			sourceTree = "<group>";
@@ -178,6 +181,7 @@
 				B11D00E5227655E300BD55CD /* Direction.swift in Sources */,
 				B195F250227726CF00E966DB /* Color.swift in Sources */,
 				B1902BA52277A9B900147BF0 /* WordsCollectionView.swift in Sources */,
+				B1902BAD2278E97100147BF0 /* ConfettiView.swift in Sources */,
 				B199765C227252C100718962 /* CrosswordViewController.swift in Sources */,
 				B1902BAB2278A94900147BF0 /* StaticData.swift in Sources */,
 				B1524E442277371900AF7642 /* AutolayoutHelper.swift in Sources */,

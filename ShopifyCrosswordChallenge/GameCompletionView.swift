@@ -12,6 +12,7 @@ class GameCompletionView: UIView, Modal {
   
   var delegate: CrosswordViewController!
   var emitter = CAEmitterLayer()
+  var confettiView: ConfettiView!
   
   lazy var backgroundView: UIView = {
     let view = UIView()
@@ -60,24 +61,24 @@ class GameCompletionView: UIView, Modal {
   
   func setupView() {
     isHidden = true
-    
+    addConfettiView()
     let frameWidth = frame.width - 64
-    
+
     addSubview(backgroundView)
     backgroundView.fillSuperview()
-    
+
     addSubview(dialogView)
     let dialogFrameSize = CGSize(width: frameWidth, height: frameWidth)
     dialogView.centerInSuperview(size: dialogFrameSize)
-    
+
     dialogView.addSubview(resetButton)
     let resetButtonSize = CGSize(width: dialogView.frame.width, height: 44)
     resetButton.anchor(top: nil, leading: dialogView.leadingAnchor, bottom: dialogView.bottomAnchor, trailing: dialogView.trailingAnchor, padding: UIEdgeInsets.init(top: 0, left: 16, bottom: 16, right: 16), size: resetButtonSize)
-    
+
     dialogView.addSubview(congratsIV)
     let imageFrameSize = CGSize(width: dialogView.frame.width, height: frameWidth / 2)
     congratsIV.anchor(top: dialogView.topAnchor, leading: dialogView.leadingAnchor, bottom: nil, trailing: dialogView.trailingAnchor, padding: UIEdgeInsets.init(top: 4, left: 4, bottom: 0, right: 4), size: imageFrameSize)
-    
+
     for constraint in dialogView.constraints {
       if constraint.firstAttribute == .height {
         constraint.constant = resetButtonSize.height + imageFrameSize.height
@@ -85,74 +86,39 @@ class GameCompletionView: UIView, Modal {
     }
   }
   
+  func addConfettiView() {
+    // Create confetti view
+    confettiView = ConfettiView(frame: self.bounds)
+    
+    // Set colors (default colors are red, green and blue)
+    confettiView.colors = [UIColor(red:0.95, green:0.40, blue:0.27, alpha:1.0),
+                           UIColor(red:1.00, green:0.78, blue:0.36, alpha:1.0),
+                           UIColor(red:0.48, green:0.78, blue:0.64, alpha:1.0),
+                           UIColor(red:0.30, green:0.76, blue:0.85, alpha:1.0),
+                           UIColor(red:0.58, green:0.39, blue:0.55, alpha:1.0)]
+    
+    // Set intensity (from 0 - 1, default intensity is 0.5)
+    confettiView.intensity = 0.5
+    
+    // Set type
+    confettiView.type = .diamond
+    
+    // For custom image
+    // confettiView.type = .Image(UIImage(named: "diamond")!)
+    
+    // Add subview
+    addSubview(confettiView)
+    confettiView.startConfetti()
+  }
+  
+  func showView() {
+    isHidden = false
+  }
+  
   @objc func resetButtonTapped() {
     dismiss(animated: true)
     delegate.resetState()
-  }
-  
-  func confettiWithColor(color: UIColor) -> CAEmitterCell {
-    let confetti = CAEmitterCell()
-    confetti.scale = 0.1
-    confetti.birthRate = 20.0
-    confetti.lifetime = 15
-    confetti.lifetimeRange = 10
-    confetti.color = color.cgColor
-    confetti.velocity = getRandomVelocity()
-    confetti.velocityRange = 0
-    confetti.emissionLongitude = CGFloat(Double.pi)
-    confetti.emissionRange = CGFloat(Double.pi)
-    confetti.spin = 3.5
-    confetti.spinRange = 0
-    confetti.scaleRange = 0.25
-    confetti.scaleSpeed = CGFloat(-0.1)
-    confetti.contents = getRandomImage()
-    confetti.alphaSpeed = -1.0 / 14.0
-    
-    return confetti
-  }
-  
-  func startConfettiAnimation() {
-    emitter.removeFromSuperlayer()
-    isHidden = false
-    
-    emitter.emitterPosition = CGPoint(x: self.frame.size.width / 2, y: -10)
-    emitter.emitterShape = CAEmitterLayerEmitterShape.line
-    emitter.emitterSize = CGSize(width: self.frame.size.width, height: 2.0)
-    emitter.renderMode = CAEmitterLayerRenderMode.additive
-    
-    let cells = Constants.colors.map({
-      return confettiWithColor(color: $0)
-    })
-    
-    emitter.emitterCells = cells
-    
-    emitter.birthRate = 1.0
-    
-    backgroundView.layer.addSublayer(emitter)
-    //      animating = true
-  }
-  
-  func stopConfettiAnimation(clear: Bool = false) {
     isHidden = true
-    if clear {
-      emitter.removeFromSuperlayer()
-    } else {
-      emitter.birthRate = 0
-    }
-    
-    //      animating = false
-  }
-  
-  func getRandomVelocity() -> CGFloat {
-    return data(data: Constants.velocities) as! CGFloat
-  }
-  
-  private func getRandomImage() -> UIImage {
-    return data(data: Constants.images) as! UIImage
-  }
-  
-  private func data(data: [Any]) -> AnyObject {
-    return data[Int.random(in: 0..<data.count - 1)] as AnyObject
   }
   
 }
