@@ -198,7 +198,9 @@ class CrosswordViewController: UIViewController {
       
       if !Constants.words.contains(getWordGenerated()) {
         for key in currentKeysForGestureState {
-          updateCellState(key, identity: true)
+          if !keysFound.contains(key) {
+            updateCellState(key, identity: true)
+          }
         }
       } else {
         for key in currentKeysForGestureState {

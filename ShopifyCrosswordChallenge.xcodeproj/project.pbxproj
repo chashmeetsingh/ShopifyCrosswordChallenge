@@ -63,6 +63,75 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B142207B2279F20C00E8D4B9 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				B199765B227252C100718962 /* CrosswordViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		B142207C2279F23500E8D4B9 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				B195F2512277299900E966DB /* GameCompletionView.swift */,
+				B1902BA42277A9B900147BF0 /* WordsCollectionView.swift */,
+				B1902BAC2278E97100147BF0 /* ConfettiView.swift */,
+				B195F253227729FC00E966DB /* Modal.swift */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		B142207D2279F24E00E8D4B9 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				B11D00EA2276570200BD55CD /* Images.swift */,
+				B195F24F227726CF00E966DB /* Color.swift */,
+				B1524E432277371900AF7642 /* AutolayoutHelper.swift */,
+				B1902BAA2278A94900147BF0 /* StaticData.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		B142207E2279F27A00E8D4B9 /* Crossword Generator */ = {
+			isa = PBXGroup;
+			children = (
+				B199766F2272671700718962 /* WordSearchGenerator.swift */,
+				B11D00E4227655E300BD55CD /* Direction.swift */,
+				B11D00E6227655FC00BD55CD /* Difficulty.swift */,
+			);
+			path = "Crossword Generator";
+			sourceTree = "<group>";
+		};
+		B142207F2279F2E200E8D4B9 /* CustomCells */ = {
+			isa = PBXGroup;
+			children = (
+				B199766B22725EEC00718962 /* CrosswordCell.swift */,
+				B11D00E02275949300BD55CD /* CurrentWordLabel.swift */,
+				B1902BA62277AB8100147BF0 /* WordCell.swift */,
+			);
+			path = CustomCells;
+			sourceTree = "<group>";
+		};
+		B14220802279F37900E8D4B9 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				B1997662227252C200718962 /* LaunchScreen.storyboard */,
+				B11D00E2227603E400BD55CD /* Main.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		B14220812279F41300E8D4B9 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				B1997659227252C100718962 /* AppDelegate.swift */,
+				B1997665227252C200718962 /* Info.plist */,
+				B1997660227252C200718962 /* Assets.xcassets */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		B199764D227252C100718962 = {
 			isa = PBXGroup;
 			children = (
@@ -82,26 +151,13 @@
 		B1997658227252C100718962 /* ShopifyCrosswordChallenge */ = {
 			isa = PBXGroup;
 			children = (
-				B1997659227252C100718962 /* AppDelegate.swift */,
-				B199765B227252C100718962 /* CrosswordViewController.swift */,
-				B1997660227252C200718962 /* Assets.xcassets */,
-				B1997662227252C200718962 /* LaunchScreen.storyboard */,
-				B1997665227252C200718962 /* Info.plist */,
-				B199766B22725EEC00718962 /* CrosswordCell.swift */,
-				B199766F2272671700718962 /* WordSearchGenerator.swift */,
-				B11D00E02275949300BD55CD /* CurrentWordLabel.swift */,
-				B11D00E2227603E400BD55CD /* Main.storyboard */,
-				B11D00E4227655E300BD55CD /* Direction.swift */,
-				B11D00E6227655FC00BD55CD /* Difficulty.swift */,
-				B11D00EA2276570200BD55CD /* Images.swift */,
-				B195F24F227726CF00E966DB /* Color.swift */,
-				B195F2512277299900E966DB /* GameCompletionView.swift */,
-				B195F253227729FC00E966DB /* Modal.swift */,
-				B1524E432277371900AF7642 /* AutolayoutHelper.swift */,
-				B1902BA42277A9B900147BF0 /* WordsCollectionView.swift */,
-				B1902BA62277AB8100147BF0 /* WordCell.swift */,
-				B1902BAA2278A94900147BF0 /* StaticData.swift */,
-				B1902BAC2278E97100147BF0 /* ConfettiView.swift */,
+				B14220812279F41300E8D4B9 /* Supporting Files */,
+				B142207B2279F20C00E8D4B9 /* Controllers */,
+				B14220802279F37900E8D4B9 /* Storyboard */,
+				B142207F2279F2E200E8D4B9 /* CustomCells */,
+				B142207E2279F27A00E8D4B9 /* Crossword Generator */,
+				B142207D2279F24E00E8D4B9 /* Helpers */,
+				B142207C2279F23500E8D4B9 /* CustomViews */,
 			);
 			path = ShopifyCrosswordChallenge;
 			sourceTree = "<group>";
@@ -332,7 +388,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MLF4G8Y374;
-				INFOPLIST_FILE = ShopifyCrosswordChallenge/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ShopifyCrosswordChallenge/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -350,7 +407,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MLF4G8Y374;
-				INFOPLIST_FILE = ShopifyCrosswordChallenge/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/ShopifyCrosswordChallenge/Supporting Files/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
