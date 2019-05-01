@@ -12,7 +12,7 @@ class CrosswordCell: UICollectionViewCell {
   
   lazy var charLabel: UILabel = {
     let label = UILabel()
-    label.text = "S"
+    label.text = "-"
     label.textColor = .white
     label.font = UIFont.boldSystemFont(ofSize: 22)
     label.translatesAutoresizingMaskIntoConstraints = false

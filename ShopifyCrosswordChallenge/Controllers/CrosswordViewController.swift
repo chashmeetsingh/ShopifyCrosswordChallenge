@@ -33,6 +33,7 @@ class CrosswordViewController: UIViewController {
       
       wordsCollectionView.wordsFound = wordsFound
       
+      // Show game completion view if all words found
       if wordsFound.count == Constants.words.count {
         completeGame()
       }
@@ -66,13 +67,13 @@ class CrosswordViewController: UIViewController {
     setupWordLabel()
     setupScoreLabel()
     setupWordsCollectionView()
-    setupGameCompletionUI()
   }
   
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     
     calculateWidthAndUpdateConstraints()
+    setupGameCompletionUI()
   }
   
   // Light status bar
@@ -116,11 +117,16 @@ class CrosswordViewController: UIViewController {
   
   func setupGameCompletionUI() {
     gameCompletionUI = GameCompletionView(frame: view.bounds)
-    view.addSubview(gameCompletionUI)
     gameCompletionUI.delegate = self
   }
   
   // MARK:- Methods
+  
+  // Initialize grid with a set of words
+  func populateCrossword() {
+    wordSearch = WordSearchGenerator(10, 10, Constants.words)
+    wordSearch.generateGrid()
+  }
   
   // Dynamically calculate width of collection view based on orientation
   fileprivate func calculateWidthAndUpdateConstraints() {
@@ -143,12 +149,6 @@ class CrosswordViewController: UIViewController {
         constraint.constant = dynamicWidth
       }
     }
-  }
-  
-  // Initialize grid with a set of words
-  func populateCrossword() {
-    wordSearch = WordSearchGenerator(10, 10, Constants.words)
-    wordSearch.generateGrid()
   }
   
   func storeKeyForCurrentGestureAndAnimateCell(_ key: String) {
@@ -190,6 +190,14 @@ class CrosswordViewController: UIViewController {
       break
     case .changed:
       storeKeyForCurrentGestureAndAnimateCell(key)
+      if currentKeysForGestureState.lastIndex(of: key) != currentKeysForGestureState.count - 1 {
+        if let key = currentKeysForGestureState.last {
+          currentKeysForGestureState.removeLast()
+          
+          if keysFound.contains(key) { return }
+          updateCellState(key, identity: true)
+        }
+      }
       break
     case .ended:
       if wordsFound.contains(getWordGenerated()) {
@@ -281,6 +289,7 @@ class CrosswordViewController: UIViewController {
   }
   
   func completeGame() {
+    view.addSubview(gameCompletionUI)
     gameCompletionUI.showView()
   }
   

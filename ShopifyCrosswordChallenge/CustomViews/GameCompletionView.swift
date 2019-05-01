@@ -12,7 +12,10 @@ class GameCompletionView: UIView, Modal {
   
   var delegate: CrosswordViewController!
   var emitter = CAEmitterLayer()
-  var confettiView: ConfettiView!
+  var confettiView: ConfettiView = {
+    let view = ConfettiView()
+    return view
+  }()
   
   lazy var backgroundView: UIView = {
     let view = UIView()
@@ -49,41 +52,32 @@ class GameCompletionView: UIView, Modal {
     return button
   }()
   
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    
-    setupView()
-  }
-  
-  required init?(coder aDecoder: NSCoder) {
-    fatalError("init(coder:) has not been implemented")
+  var frameWidth: CGFloat {
+    get {
+      if UIDevice.current.orientation.isPortrait {
+        return frame.width - 64
+      } else {
+        return frame.height - 64
+      }
+    }
   }
   
   func setupView() {
-    isHidden = true
     addConfettiView()
-    let frameWidth = frame.width - 64
 
     addSubview(backgroundView)
     backgroundView.fillSuperview()
 
     addSubview(dialogView)
-    let dialogFrameSize = CGSize(width: frameWidth, height: frameWidth)
+    let dialogFrameSize = CGSize(width: frameWidth, height: frameWidth / 2 + 16)
     dialogView.centerInSuperview(size: dialogFrameSize)
 
     dialogView.addSubview(resetButton)
-    let resetButtonSize = CGSize(width: dialogView.frame.width, height: 44)
+    let resetButtonSize = CGSize(width: 0, height: 40)
     resetButton.anchor(top: nil, leading: dialogView.leadingAnchor, bottom: dialogView.bottomAnchor, trailing: dialogView.trailingAnchor, padding: UIEdgeInsets.init(top: 0, left: 16, bottom: 16, right: 16), size: resetButtonSize)
 
     dialogView.addSubview(congratsIV)
-    let imageFrameSize = CGSize(width: dialogView.frame.width, height: frameWidth / 2)
-    congratsIV.anchor(top: dialogView.topAnchor, leading: dialogView.leadingAnchor, bottom: nil, trailing: dialogView.trailingAnchor, padding: UIEdgeInsets.init(top: 4, left: 4, bottom: 0, right: 4), size: imageFrameSize)
-
-    for constraint in dialogView.constraints {
-      if constraint.firstAttribute == .height {
-        constraint.constant = resetButtonSize.height + imageFrameSize.height
-      }
-    }
+    congratsIV.anchor(top: dialogView.topAnchor, leading: dialogView.leadingAnchor, bottom: resetButton.topAnchor, trailing: dialogView.trailingAnchor, padding: UIEdgeInsets.init(top: 4, left: 4, bottom: 0, right: 4), size: .zero)
   }
   
   func addConfettiView() {
@@ -95,13 +89,13 @@ class GameCompletionView: UIView, Modal {
   }
   
   func showView() {
-    isHidden = false
+    setupView()
+    show(animated: true)
   }
   
   @objc func resetButtonTapped() {
     dismiss(animated: true)
     delegate.resetState()
-    isHidden = true
   }
   
 }

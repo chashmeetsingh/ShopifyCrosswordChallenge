@@ -13,6 +13,7 @@
 		B11D00E7227655FC00BD55CD /* Difficulty.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D00E6227655FC00BD55CD /* Difficulty.swift */; };
 		B11D00EB2276570200BD55CD /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = B11D00EA2276570200BD55CD /* Images.swift */; };
 		B1524E442277371900AF7642 /* AutolayoutHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1524E432277371900AF7642 /* AutolayoutHelper.swift */; };
+		B16FF08D227A57FF00AAA0E8 /* String+EstimatedFrame.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16FF08C227A57FF00AAA0E8 /* String+EstimatedFrame.swift */; };
 		B1902BA52277A9B900147BF0 /* WordsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1902BA42277A9B900147BF0 /* WordsCollectionView.swift */; };
 		B1902BA72277AB8100147BF0 /* WordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1902BA62277AB8100147BF0 /* WordCell.swift */; };
 		B1902BAB2278A94900147BF0 /* StaticData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1902BAA2278A94900147BF0 /* StaticData.swift */; };
@@ -35,6 +36,7 @@
 		B11D00E6227655FC00BD55CD /* Difficulty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Difficulty.swift; sourceTree = "<group>"; };
 		B11D00EA2276570200BD55CD /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		B1524E432277371900AF7642 /* AutolayoutHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutolayoutHelper.swift; sourceTree = "<group>"; };
+		B16FF08C227A57FF00AAA0E8 /* String+EstimatedFrame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+EstimatedFrame.swift"; sourceTree = "<group>"; };
 		B1902BA42277A9B900147BF0 /* WordsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordsCollectionView.swift; sourceTree = "<group>"; };
 		B1902BA62277AB8100147BF0 /* WordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordCell.swift; sourceTree = "<group>"; };
 		B1902BAA2278A94900147BF0 /* StaticData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticData.swift; sourceTree = "<group>"; };
@@ -89,18 +91,19 @@
 				B195F24F227726CF00E966DB /* Color.swift */,
 				B1524E432277371900AF7642 /* AutolayoutHelper.swift */,
 				B1902BAA2278A94900147BF0 /* StaticData.swift */,
+				B16FF08C227A57FF00AAA0E8 /* String+EstimatedFrame.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		B142207E2279F27A00E8D4B9 /* Crossword Generator */ = {
+		B142207E2279F27A00E8D4B9 /* Word Search Generator */ = {
 			isa = PBXGroup;
 			children = (
 				B199766F2272671700718962 /* WordSearchGenerator.swift */,
 				B11D00E4227655E300BD55CD /* Direction.swift */,
 				B11D00E6227655FC00BD55CD /* Difficulty.swift */,
 			);
-			path = "Crossword Generator";
+			path = "Word Search Generator";
 			sourceTree = "<group>";
 		};
 		B142207F2279F2E200E8D4B9 /* CustomCells */ = {
@@ -155,7 +158,7 @@
 				B142207B2279F20C00E8D4B9 /* Controllers */,
 				B14220802279F37900E8D4B9 /* Storyboard */,
 				B142207F2279F2E200E8D4B9 /* CustomCells */,
-				B142207E2279F27A00E8D4B9 /* Crossword Generator */,
+				B142207E2279F27A00E8D4B9 /* Word Search Generator */,
 				B142207D2279F24E00E8D4B9 /* Helpers */,
 				B142207C2279F23500E8D4B9 /* CustomViews */,
 			);
@@ -239,6 +242,7 @@
 				B1902BA52277A9B900147BF0 /* WordsCollectionView.swift in Sources */,
 				B1902BAD2278E97100147BF0 /* ConfettiView.swift in Sources */,
 				B199765C227252C100718962 /* CrosswordViewController.swift in Sources */,
+				B16FF08D227A57FF00AAA0E8 /* String+EstimatedFrame.swift in Sources */,
 				B1902BAB2278A94900147BF0 /* StaticData.swift in Sources */,
 				B1524E442277371900AF7642 /* AutolayoutHelper.swift in Sources */,
 				B199766C22725EEC00718962 /* CrosswordCell.swift in Sources */,

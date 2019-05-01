@@ -23,7 +23,7 @@ class WordSearchGenerator {
   var numberOfColumns = 10
   
   var crossword = [[Label]]()
-  var difficulty = Difficulty.easy
+  var difficulty = Difficulty.medium
   
   let allLetters = (65...90).map { Character(Unicode.Scalar($0)) }
   
@@ -32,11 +32,8 @@ class WordSearchGenerator {
     self.numberOfColumns = columns
     
     self.words = []
-    for word in wordList {
+    for word in wordList.sorted(by: {$0.count > $1.count}) {
       self.words.append(Word(text: word))
-    }
-    self.words.sort { (w1, w2) -> Bool in
-      w1.text.count > w2.text.count
     }
     
   }

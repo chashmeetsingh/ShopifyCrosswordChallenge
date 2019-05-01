@@ -21,7 +21,7 @@ class WordCell: UICollectionViewCell {
     label.textColor = .white
     label.font = UIFont.systemFont(ofSize: 12)
     label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = "Something"
+    label.text = "-"
     label.textAlignment = .center
     return label
   }()
