@@ -1,6 +1,13 @@
 # Shopify Mobile Developer Challenge
 
-![](https://i.imgur.com/OF7lJn1.gif)
+### Features Implemented
+- Random word search generator
+- Swipe to select words
+- Cell animations
+- Confetti view with an option to restart game
+- Tracking number of words searched by the users
+- List the words found or to be found by the user
+- Support Potrait and Landscape mode
 
 ### Challenge Description
 - Create a word search mobile app for Android or iOS (depending on the discipline you’re applying to).
