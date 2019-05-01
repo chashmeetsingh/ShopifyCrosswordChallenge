@@ -1,6 +1,6 @@
 # Shopify Mobile Developer Challenge
 
-[Demo](https://www.youtube.com/watch?v=axpNmeXCtF0)
+<a href="https://www.youtube.com/watch?v=axpNmeXCtF0" target="_blank">Demo</a>
 
 ### Features Implemented
 - Random word search generator
