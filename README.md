@@ -1,5 +1,7 @@
 # Shopify Mobile Developer Challenge
 
+<a href="https://www.youtube.com/watch?v=axpNmeXCtF0" target="_blank">Demo</a>
+
 ### Features Implemented
 - Random word search generator
 - Swipe to select words
