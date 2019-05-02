@@ -25,8 +25,10 @@ class WordSearchGenerator {
   var crossword = [[Label]]()
   var difficulty = Difficulty.medium
   
+  // Save all possible uppercase letters
   let allLetters = (65...90).map { Character(Unicode.Scalar($0)) }
   
+  // Initialize with number of rows and columns and a list of words
   init(_ rows: Int, _ columns: Int, _ wordList: [String]) {
     self.numberOfRows = rows
     self.numberOfColumns = columns
@@ -48,6 +50,7 @@ class WordSearchGenerator {
 //    printGrid()
   }
   
+  // Populate with random words
   fileprivate func fillGaps() {
     for column in crossword {
       for label in column {
@@ -58,6 +61,7 @@ class WordSearchGenerator {
     }
   }
   
+  // Debug grid by printing
   func printGrid() {
     for column in crossword {
       for row in column {
@@ -67,6 +71,7 @@ class WordSearchGenerator {
     }
   }
   
+  // Get the contents of the grid
   func labels(fromX x: Int, fromY y: Int, word: String, direction: (x: Int, y: Int)) -> [Label]? {
     var returnValue = [Label]()
     
@@ -88,6 +93,7 @@ class WordSearchGenerator {
     return returnValue
   }
   
+  // Try placing a word based on given direction
   func tryPlacing(_ word: String, direction: (x: Int, y: Int)) -> Bool {
     let xLength = direction.x * (word.count - 1)
     let yLength = direction.y * (word.count - 1)
@@ -113,6 +119,7 @@ class WordSearchGenerator {
     return false
   }
   
+  // Try placing word based on all possible direction
   func place(_ word: Word) -> Bool {
     let formatterWord = word.text.replacingOccurrences(of: " ", with: "").uppercased()
     

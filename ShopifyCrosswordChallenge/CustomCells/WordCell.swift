@@ -26,7 +26,7 @@ class WordCell: UICollectionViewCell {
     return label
   }()
   
-  func setupLabel() {
+  fileprivate func setupLabel() {
     addSubview(wordLabel)
     wordLabel.fillSuperview()
     wordLabel.text = word.text

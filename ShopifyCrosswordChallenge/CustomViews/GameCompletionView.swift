@@ -80,6 +80,20 @@ class GameCompletionView: UIView, Modal {
     congratsIV.anchor(top: dialogView.topAnchor, leading: dialogView.leadingAnchor, bottom: resetButton.topAnchor, trailing: dialogView.trailingAnchor, padding: UIEdgeInsets.init(top: 4, left: 4, bottom: 0, right: 4), size: .zero)
   }
   
+  // Update frame of the view on orientation change
+  func update(frame: CGRect) {
+    UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: UIView.AnimationOptions(rawValue: 0), animations: {
+      self.dialogView.constraints.forEach { (constraint) in
+        self.frame = frame
+        if constraint.firstAttribute == .height {
+          constraint.constant = self.frameWidth / 2 + 16
+        } else if constraint.firstAttribute == .width {
+          constraint.constant = self.frameWidth
+        }
+      }
+    }, completion: nil)
+  }
+  
   func addConfettiView() {
     // Create confetti view
     confettiView = ConfettiView(frame: self.bounds)

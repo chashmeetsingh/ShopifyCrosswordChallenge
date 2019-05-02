@@ -15,7 +15,6 @@ class CrosswordCell: UICollectionViewCell {
     label.text = "-"
     label.textColor = .white
     label.font = UIFont.boldSystemFont(ofSize: 22)
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.textAlignment = .center
     return label
   }()
@@ -27,21 +26,15 @@ class CrosswordCell: UICollectionViewCell {
     addCharLabel()
   }
   
-  func setupView() {
+  fileprivate func setupView() {
     layer.borderColor = UIColor.black.cgColor
     layer.borderWidth = 0.4
     backgroundColor = UIColor(red: 0.19, green: 0.25, blue: 0.62, alpha: 1.0)
   }
   
-  func addCharLabel() {
+  fileprivate func addCharLabel() {
     addSubview(charLabel)
-    let constraints = [
-      charLabel.topAnchor.constraint(equalTo: topAnchor),
-      charLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
-      charLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-      charLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-    ]
-    NSLayoutConstraint.activate(constraints)
+    charLabel.fillSuperview()
   }
   
   override func layoutSubviews() {

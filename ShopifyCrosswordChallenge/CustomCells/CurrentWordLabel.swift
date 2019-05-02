@@ -8,6 +8,7 @@
 
 import UIKit
 
+// Custom Label with predefined edge insets
 class CurrentWordLabel: UILabel {
   
   @IBInspectable var topInset: CGFloat = 16.0

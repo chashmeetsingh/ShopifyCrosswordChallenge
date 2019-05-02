@@ -53,10 +53,13 @@ class CrosswordViewController: UIViewController {
     }
   }
   
+  // Keep a track of words found to r|c keys list
   var wordToListOfKeys = [String : [String]]()
   
+  // Track strokes drawn
   var strokeViews = [UIView]()
   
+  // Confetti + Model view when game completes
   var gameCompletionUI: GameCompletionView!
   
   override func viewDidLoad() {
@@ -83,13 +86,15 @@ class CrosswordViewController: UIViewController {
   
   // Regenerate bezier curves and invalidate layout on rotation
   override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-    super.viewWillTransition(to: size, with: coordinator)
-    
     // Perform the following only after completion of the orientation
     coordinator.animate(alongsideTransition: nil) { _ in
       self.calculateWidthAndUpdateConstraints()
       self.animateCellsForWordsFound()
+      self.gameCompletionUI.update(frame: self.view.frame)
     }
+    
+    // Call this later to get the correct frame
+    super.viewWillTransition(to: size, with: coordinator)
   }
   
   // MARK:- Setup UI
@@ -133,8 +138,8 @@ class CrosswordViewController: UIViewController {
     if UIDevice.current.orientation.isPortrait {
       dynamicWidth = containerView.frame.width - 32
     } else if UIDevice.current.orientation.isLandscape {
-      let del: CGFloat = currentWordLabel.frame.height + 16 + 8
-      dynamicWidth = containerView.frame.height - del
+      let offset: CGFloat = currentWordLabel.frame.height + 16 + 8
+      dynamicWidth = containerView.frame.height - offset
     }
     
     crosswordCollectionView.constraints.forEach { (constraint) in
@@ -158,6 +163,7 @@ class CrosswordViewController: UIViewController {
     updateCellState(key)
   }
   
+  // Animate cell to default or scale down
   func updateCellState(_ key: String, identity: Bool = false) {
     guard let cell = cellFromKey[key] as? CrosswordCell else { return }
     UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -170,6 +176,7 @@ class CrosswordViewController: UIViewController {
     }, completion: nil)
   }
   
+  // Handle the pan gesture
   @objc func handleCrosswordSwipeGesture(gesture: UIPanGestureRecognizer) {
     let location = gesture.location(in: crosswordCollectionView)
     
@@ -185,11 +192,13 @@ class CrosswordViewController: UIViewController {
     
     switch gesture.state {
     case .began:
+      // Begin by removing the current keys
       currentKeysForGestureState = []
       storeKeyForCurrentGestureAndAnimateCell(key)
       break
     case .changed:
       storeKeyForCurrentGestureAndAnimateCell(key)
+      // Remove the key if user chooses to swipe back
       if currentKeysForGestureState.lastIndex(of: key) != currentKeysForGestureState.count - 1 {
         if let key = currentKeysForGestureState.last {
           currentKeysForGestureState.removeLast()
@@ -200,10 +209,12 @@ class CrosswordViewController: UIViewController {
       }
       break
     case .ended:
+      // Do nothing is word has been found
       if wordsFound.contains(getWordGenerated()) {
         return
       }
       
+      // If word not found, animate cells back to the default state
       if !Constants.words.contains(getWordGenerated()) {
         for key in currentKeysForGestureState {
           if !keysFound.contains(key) {
@@ -211,12 +222,13 @@ class CrosswordViewController: UIViewController {
           }
         }
       } else {
+        // Store the keys and draw the stroke view
         for key in currentKeysForGestureState {
           keysFound.append(key)
         }
         wordsFound.append(getWordGenerated())
         wordToListOfKeys[getWordGenerated()] = currentKeysForGestureState
-        drawCurve(startKey: currentKeysForGestureState[0], endKey: currentKeysForGestureState[currentKeysForGestureState.count - 1])
+        drawStrokeView(startKey: currentKeysForGestureState[0], endKey: currentKeysForGestureState[currentKeysForGestureState.count - 1])
       }
       break
     default:
@@ -253,11 +265,12 @@ class CrosswordViewController: UIViewController {
   
   func regenerateStrokeViews() {
     for (_, value) in wordToListOfKeys {
-      drawCurve(startKey: value[0], endKey: value[value.count - 1])
+      drawStrokeView(startKey: value[0], endKey: value[value.count - 1])
     }
   }
   
-  func drawCurve(startKey: String, endKey: String) {
+  // Draw stroke view from start to end point
+  func drawStrokeView(startKey: String, endKey: String) {
     if let startView = cellFromKey[startKey], let endView = cellFromKey[endKey] {
       var startPoint = CGPoint(x: startView.center.x, y: startView.center.y)
       var endPoint = CGPoint(x: endView.center.x, y: endView.center.y)
@@ -288,11 +301,13 @@ class CrosswordViewController: UIViewController {
     }
   }
   
+  // Show game completion UI
   func completeGame() {
     view.addSubview(gameCompletionUI)
     gameCompletionUI.showView()
   }
   
+  // Reset app state
   func resetState() {
     populateCrossword()
     wordsFound = []

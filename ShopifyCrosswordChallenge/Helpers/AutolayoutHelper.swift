@@ -8,6 +8,8 @@
 
 import UIKit
 
+// Auto Layout Helper file by Brian
+
 struct AnchoredConstraints {
   var top, leading, bottom, trailing, width, height: NSLayoutConstraint?
 }
