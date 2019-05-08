@@ -136,10 +136,18 @@ class CrosswordViewController: UIViewController {
   // Dynamically calculate width of collection view based on orientation
   fileprivate func calculateWidthAndUpdateConstraints() {
     if UIDevice.current.orientation.isPortrait {
-      dynamicWidth = containerView.frame.width - 32
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        dynamicWidth = containerView.frame.width - 64
+      } else {
+        dynamicWidth = containerView.frame.width - 32
+      }
     } else if UIDevice.current.orientation.isLandscape {
       let offset: CGFloat = currentWordLabel.frame.height + 16 + 8
-      dynamicWidth = containerView.frame.height - offset
+      if UIDevice.current.userInterfaceIdiom == .pad {
+        dynamicWidth = containerView.frame.height - offset - 64
+      } else {
+        dynamicWidth = containerView.frame.height - offset
+      }
     }
     
     crosswordCollectionView.constraints.forEach { (constraint) in
@@ -278,7 +286,7 @@ class CrosswordViewController: UIViewController {
       if UIDevice.current.orientation.isPortrait {
         startPoint.x += view.safeAreaInsets.left
         endPoint.x += view.safeAreaInsets.left
-      } else {
+      } else if UIDevice.current.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .phone {
         startPoint.y += view.safeAreaInsets.top
         endPoint.y += view.safeAreaInsets.top
       }

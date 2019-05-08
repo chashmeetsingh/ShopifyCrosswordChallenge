@@ -10,6 +10,7 @@
 - Tracking number of words searched by the users
 - List the words found or to be found by the user
 - Support Potrait and Landscape mode
+- iPad Support
 
 ### Challenge Description
 - Create a word search mobile app for Android or iOS (depending on the discipline you’re applying to).

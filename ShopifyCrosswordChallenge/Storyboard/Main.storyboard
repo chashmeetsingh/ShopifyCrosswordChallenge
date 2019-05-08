@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Jmb-RX-PiR">
-    <device id="retina6_5" orientation="portrait">
+    <device id="ipad10_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,17 +15,17 @@
             <objects>
                 <viewController id="Jmb-RX-PiR" customClass="CrosswordViewController" customModule="ShopifyCrosswordChallenge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="0iq-gA-hNu">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" flexibleMinY="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="QGE-ST-y3i">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="1112"/>
                             </imageView>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yiS-7u-tZu">
-                                <rect key="frame" x="4" y="52" width="406" height="806"/>
+                                <rect key="frame" x="4" y="28" width="826" height="1080"/>
                                 <subviews>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GVV-15-66H" customClass="CurrentWordLabel" customModule="ShopifyCrosswordChallenge" customModuleProvider="target">
-                                        <rect key="frame" x="153" y="325" width="100" height="36"/>
+                                        <rect key="frame" x="363" y="462" width="100" height="36"/>
                                         <color key="backgroundColor" red="0.20392156862745098" green="0.25098039215686274" blue="0.59607843137254901" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="TLf-zd-Lxa"/>
@@ -53,7 +53,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Score: 0/0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yKD-mZ-zH2" customClass="CurrentWordLabel" customModule="ShopifyCrosswordChallenge" customModuleProvider="target">
-                                        <rect key="frame" x="316" y="0.0" width="86" height="22"/>
+                                        <rect key="frame" x="736" y="0.0" width="86" height="22"/>
                                         <color key="backgroundColor" red="0.20264580845832825" green="0.25072008371353149" blue="0.59611004590988159" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="6eg-ty-3Fk"/>
@@ -68,7 +68,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zHL-20-0in">
-                                        <rect key="frame" x="153" y="369" width="100" height="100"/>
+                                        <rect key="frame" x="363" y="506" width="100" height="100"/>
                                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <gestureRecognizers/>
                                         <constraints>
@@ -88,7 +88,7 @@
                                         </connections>
                                     </collectionView>
                                     <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PQr-kb-Np3" customClass="WordsCollectionView" customModule="ShopifyCrosswordChallenge" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="485" width="382" height="305"/>
+                                        <rect key="frame" x="16" y="622" width="794" height="442"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Szx-x2-Z0h">
                                             <size key="itemSize" width="50" height="50"/>
@@ -113,24 +113,28 @@
                                     <constraint firstItem="zHL-20-0in" firstAttribute="centerY" secondItem="yiS-7u-tZu" secondAttribute="centerY" constant="16" id="3rr-14-5ex"/>
                                     <constraint firstItem="PQr-kb-Np3" firstAttribute="top" secondItem="yKD-mZ-zH2" secondAttribute="bottom" constant="16" id="7vj-hP-fC4"/>
                                     <constraint firstItem="zHL-20-0in" firstAttribute="centerX" secondItem="yiS-7u-tZu" secondAttribute="centerX" id="FCu-RP-ebL"/>
-                                    <constraint firstItem="PQr-kb-Np3" firstAttribute="leading" secondItem="yiS-7u-tZu" secondAttribute="leading" constant="16" id="GgI-GN-ACh"/>
                                     <constraint firstItem="zHL-20-0in" firstAttribute="top" secondItem="GVV-15-66H" secondAttribute="bottom" constant="8" id="HOw-If-LFf"/>
                                     <constraint firstItem="PQr-kb-Np3" firstAttribute="leading" secondItem="zHL-20-0in" secondAttribute="trailing" constant="8" id="IWV-Uf-g8J"/>
                                     <constraint firstItem="GVV-15-66H" firstAttribute="centerX" secondItem="yiS-7u-tZu" secondAttribute="centerX" id="KVB-RS-d4E"/>
                                     <constraint firstItem="PQr-kb-Np3" firstAttribute="top" secondItem="zHL-20-0in" secondAttribute="bottom" constant="16" id="OZa-Tg-td2"/>
                                     <constraint firstItem="PQr-kb-Np3" firstAttribute="top" secondItem="yKD-mZ-zH2" secondAttribute="bottom" constant="16" id="RNm-nf-48z"/>
                                     <constraint firstAttribute="bottom" secondItem="PQr-kb-Np3" secondAttribute="bottom" constant="16" id="Y8V-s4-zz4"/>
-                                    <constraint firstAttribute="trailing" secondItem="PQr-kb-Np3" secondAttribute="trailing" constant="8" id="eZn-td-psZ"/>
+                                    <constraint firstAttribute="trailing" secondItem="PQr-kb-Np3" secondAttribute="trailing" constant="16" id="eZn-td-psZ"/>
+                                    <constraint firstItem="PQr-kb-Np3" firstAttribute="leading" secondItem="yiS-7u-tZu" secondAttribute="leading" constant="16" id="f9T-9b-fl4"/>
+                                    <constraint firstItem="PQr-kb-Np3" firstAttribute="top" secondItem="zHL-20-0in" secondAttribute="bottom" constant="16" id="ieH-VQ-UmS"/>
                                     <constraint firstItem="yKD-mZ-zH2" firstAttribute="top" secondItem="yiS-7u-tZu" secondAttribute="top" id="oBk-ru-eFn"/>
+                                    <constraint firstItem="PQr-kb-Np3" firstAttribute="leading" secondItem="yiS-7u-tZu" secondAttribute="leading" constant="16" id="pIF-Jq-LH4"/>
                                     <constraint firstAttribute="trailing" secondItem="yKD-mZ-zH2" secondAttribute="trailing" constant="4" id="wh8-tY-oil"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
                                         <exclude reference="7vj-hP-fC4"/>
-                                        <exclude reference="GgI-GN-ACh"/>
                                         <exclude reference="IWV-Uf-g8J"/>
                                         <exclude reference="OZa-Tg-td2"/>
                                         <exclude reference="RNm-nf-48z"/>
+                                        <exclude reference="f9T-9b-fl4"/>
+                                        <exclude reference="ieH-VQ-UmS"/>
+                                        <exclude reference="pIF-Jq-LH4"/>
                                     </mask>
                                 </variation>
                                 <variation key="heightClass=compact-widthClass=compact">
@@ -147,8 +151,14 @@
                                 </variation>
                                 <variation key="heightClass=regular-widthClass=compact">
                                     <mask key="constraints">
-                                        <include reference="GgI-GN-ACh"/>
                                         <include reference="OZa-Tg-td2"/>
+                                        <include reference="f9T-9b-fl4"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="ieH-VQ-UmS"/>
+                                        <include reference="pIF-Jq-LH4"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -177,7 +187,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qIv-bO-rUi" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="53.600000000000001" y="123.68815592203899"/>
+            <point key="canvasLocation" x="52.173913043478265" y="123.21428571428571"/>
         </scene>
     </scenes>
     <resources>
