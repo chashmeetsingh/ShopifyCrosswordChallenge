@@ -6,6 +6,9 @@
 //  Copyright © 2019 Chashmeet Singh. All rights reserved.
 //
 
+// Reference https://github.com/twostraws/SwiftOnSundays/tree/master/006%20Wordsearch
+// Swift on Sundays by Paul Hudson (@twostraws)
+
 import Foundation
 
 struct Word {
